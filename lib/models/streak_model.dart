@@ -73,3 +73,7 @@ class Streak {
   //   this.icon = "",
   // });
 }
+
+Future<void> openStreakBox() async {
+  await Hive.openBox<Streak>('streaks');
+}

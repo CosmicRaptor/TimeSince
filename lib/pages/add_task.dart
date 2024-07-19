@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streaks_app/main.dart';
 import 'package:date_picker_plus/date_picker_plus.dart';
 
-class AddTask extends StatefulWidget {
+import '../models/streak_model.dart';
+import '../providers/task_providers.dart';
+
+class AddTask extends ConsumerStatefulWidget {
   const AddTask({super.key});
 
   @override
-  State<AddTask> createState() => _AddTaskState();
+  ConsumerState<AddTask> createState() => _AddTaskState();
 }
 
-class _AddTaskState extends State<AddTask> {
+class _AddTaskState extends ConsumerState<AddTask> {
   final nameController = TextEditingController();
   DateTime chosenTime = DateTime.now();
   @override
   Widget build(BuildContext context) {
+    //final streaks = ref.watch(streakNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('Add new task'),
@@ -55,7 +60,10 @@ class _AddTaskState extends State<AddTask> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  MaterialButton(onPressed: (){}, color: Colors.green, elevation: 3, child: Text('Save', style: TextStyle(color: Colors.white),),),
+                  MaterialButton(onPressed: (){
+                    ref.read(streakNotifierProvider.notifier).addStreak(Streak(name: nameController.text, startDate: chosenTime));
+                    Navigator.of(context).pop();
+                  }, color: Colors.green, elevation: 3, child: Text('Save', style: TextStyle(color: Colors.white),),),
                 ],
               )
             ],
